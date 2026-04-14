@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ascoptage — Gestion de projet informatique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:      #F9F7F5;
+  --bg2:     #F2EFEA;
+  --bg3:     #EAE6DF;
+  --white:   #FFFFFF;
+  --ink:     #1A1814;
+  --ink-70:  #4A4640;
+  --ink-40:  #908C85;
+  --ink-15:  rgba(26,24,20,.12);
+  --red:     #DF3623;
+  --red-l:   #EA603C;
+  --red-xl:  #F5A48B;
+  --red-bg:  rgba(223,54,35,.07);
+  --red-bd:  rgba(223,54,35,.22);
+  --warm:    #C4922A;
+  --r:       10px;
+  --rl:      22px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.7;overflow-x:hidden;cursor:none}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;width:8px;height:8px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(255,255,255,.4)}
+#cursor-ring{position:fixed;width:34px;height:34px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .18s cubic-bezier(.25,.46,.45,.94),height .18s,opacity .2s;opacity:.5;box-shadow:0 0 0 1px rgba(255,255,255,.25),inset 0 0 0 1px rgba(255,255,255,.25)}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.5rem,5vw,5rem);background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:background .3s,box-shadow .3s}
+nav.scrolled{background:rgba(255,255,255,.88);box-shadow:0 1px 0 var(--ink-15)}
+.nav-logo{font-family:'Outfit',sans-serif;font-weight:600;font-size:1.2rem;letter-spacing:-.01em;color:var(--red);text-decoration:none;display:flex;align-items:center;gap:8px}
+
+.nav-logo-mark svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-40);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--red);color:#fff;padding:.5rem 1.5rem;border-radius:40px;font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-cta:hover{background:var(--red-l)}
+@media(max-width:860px){.nav-links{display:none}}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0;position:relative;overflow:hidden;padding-top:70px}
+@media(max-width:800px){.hero{grid-template-columns:1fr;min-height:auto}}
+.hero-left{padding:clamp(5rem,10vh,8rem) clamp(1.5rem,6vw,5rem) clamp(5rem,10vh,8rem) clamp(1.5rem,8vw,7rem);position:relative;z-index:2}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:2.5rem}
+.hero-eyebrow-line{width:32px;height:1px;background:var(--red)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,5.5vw,6rem);font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+.hero h1 em{font-style:italic;color:var(--red);display:block}
+.hero h1 .light{font-weight:400;font-style:italic;color:var(--ink-40)}
+.hero-sub{margin-top:2rem;font-size:1rem;color:var(--ink-70);line-height:1.8;font-weight:300;max-width:460px}
+.hero-actions{margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:500;padding:.85rem 2rem;border-radius:40px;text-decoration:none;border:none;cursor:none;transition:all .22s;letter-spacing:.02em}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary:hover{background:var(--red-l);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--ink-15)}
+.btn-outline:hover{border-color:var(--ink-40);transform:translateY(-2px)}
+.btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.hero-meta{margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--ink-15);display:flex;gap:3rem;align-items:flex-end}
+.hero-stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-.03em}
+.hero-stat-num sup{font-size:1.2rem;vertical-align:super}
+.hero-stat-lbl{font-size:.72rem;color:var(--ink-40);letter-spacing:.08em;text-transform:uppercase;font-weight:400;margin-top:.2rem}
+
+/* HERO RIGHT */
+.hero-right{background:var(--ink);min-height:100%;position:relative;display:flex;align-items:center;justify-content:center;padding:5rem 3.5rem;overflow:hidden}
+@media(max-width:800px){.hero-right{min-height:420px;padding:3rem 2rem}}
+.hero-right::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle, rgba(223,54,35,.15) 0%, transparent 70%);top:-100px;right:-100px}
+.hero-right::after{content:'';position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle, rgba(234,96,60,.1) 0%, transparent 70%);bottom:-100px;left:-50px}
+.hero-right-inner{position:relative;z-index:1;width:100%;max-width:380px}
+.hero-big-word{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,8vw,7rem);font-weight:700;font-style:italic;color:rgba(255,255,255,.05);line-height:1;position:absolute;top:-1.5rem;right:-1rem;pointer-events:none;white-space:nowrap;letter-spacing:-.03em}
+.hcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--rl);padding:1.5rem 1.75rem;backdrop-filter:blur(8px);margin-bottom:1rem}
+.hcard:last-child{margin-bottom:0}
+.hcard-label{font-size:.65rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.6rem}
+.hcard-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:#fff;line-height:1;letter-spacing:-.02em}
+.hcard-text{font-size:.875rem;color:rgba(255,255,255,.75);font-weight:300;line-height:1.6}
+.hcard-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.hcard-row .hcard{margin-bottom:0}
+.hcard-tag{font-size:.72rem;font-weight:500;letter-spacing:.06em;color:rgba(255,255,255,.35);margin-top:.6rem}
+
+/* ── STRIP ── */
+.strip{background:var(--red);padding:1.2rem clamp(1.5rem,5vw,5rem);display:flex;align-items:center;justify-content:center;gap:clamp(1.5rem,4vw,5rem);flex-wrap:wrap}
+.strip-item{display:flex;align-items:center;gap:.6rem}
+.strip-item svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.strip-item span{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.9);letter-spacing:.04em}
+
+/* ── SECTION BASICS ── */
+.sec-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:1.25rem;display:flex;align-items:center;gap:10px}
+.sec-eyebrow::before{content:'';width:22px;height:1px;background:var(--red)}
+.sec-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,3.5vw,3.5rem);font-weight:700;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
+.sec-h2 em{font-style:italic;color:var(--red)}
+
+/* ── EXPERTISE ── */
+.expertise{padding:clamp(6rem,12vw,9rem) clamp(1.5rem,6vw,5rem);border-top:1px solid var(--ink-15)}
+.expertise-inner{display:grid;grid-template-columns:5fr 6fr;gap:6rem;align-items:start}
+@media(max-width:900px){.expertise-inner{grid-template-columns:1fr;gap:3rem}}
+.expertise-body{margin-top:1.75rem;font-size:.95rem;color:var(--ink-70);font-weight:300;line-height:1.85}
+.expertise-body p+p{margin-top:1rem}
+.expertise-cards{display:flex;flex-direction:column;gap:1px;background:var(--ink-15);border:1px solid var(--ink-15);border-radius:var(--rl);overflow:hidden}
+.exp-card{background:var(--white);padding:1.5rem 1.75rem;transition:background .2s;cursor:none;display:flex;align-items:flex-start;gap:1.25rem}
+.exp-card:hover{background:var(--bg)}
+.exp-card.active{background:var(--red-bg)}
+.exp-card.active .exp-title{color:var(--red)}
+.exp-icon{width:42px;height:42px;min-width:42px;border-radius:10px;background:var(--red-bg);border:1px solid var(--red-bd);display:flex;align-items:center;justify-content:center;margin-top:.1rem}
+.exp-icon svg{width:18px;height:18px;stroke:var(--red);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.exp-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:.25rem;letter-spacing:-.01em}
+.exp-desc{font-size:.82rem;color:var(--ink-40);font-weight:300;line-height:1.65}
+
+/* ── SCOP ── */
+.scop{padding:clamp(6rem,12vw,9rem) clamp(1.5rem,6vw,5rem);background:var(--ink);border-top:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
+.scop::before{content:'SCOP';position:absolute;right:-3rem;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:22vw;font-weight:700;font-style:italic;color:rgba(255,255,255,.03);letter-spacing:-.04em;pointer-events:none;line-height:1;white-space:nowrap}
+.scop .sec-eyebrow{color:var(--red-xl)}
+.scop .sec-eyebrow::before{background:var(--red-xl)}
+.scop .sec-h2{color:#fff}
+.scop .sec-h2 em{color:var(--red-xl)}
+.scop-inner{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+@media(max-width:900px){.scop-inner{grid-template-columns:1fr;gap:3rem}}
+.scop-body{margin-top:1.75rem;font-size:.95rem;color:rgba(255,255,255,.45);font-weight:300;line-height:1.85}
+.scop-body p+p{margin-top:1rem}
+.scop-pillars{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.pillar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--rl);padding:1.75rem;transition:background .25s,transform .25s;cursor:none}
+.pillar:hover{background:rgba(223,54,35,.1);transform:translateY(-3px)}
+.pillar-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;font-style:italic;color:rgba(255,255,255,.06);line-height:1;margin-bottom:1rem}
+.pillar-icon{width:36px;height:36px;border-radius:8px;background:rgba(223,54,35,.2);border:1px solid rgba(223,54,35,.3);display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
+.pillar-icon svg{width:16px;height:16px;stroke:var(--red-xl);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pillar-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:.35rem;letter-spacing:-.01em}
+.pillar-text{font-size:.8rem;color:rgba(255,255,255,.35);font-weight:300;line-height:1.65}
+
+/* ── TEAM ── */
+.team{padding:clamp(6rem,12vw,9rem) clamp(1.5rem,6vw,5rem);border-top:1px solid var(--ink-15)}
+.team-header{max-width:560px;margin-bottom:4rem}
+.team-header p{margin-top:1.5rem;font-size:.95rem;color:var(--ink-70);font-weight:300;line-height:1.85}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+@media(max-width:900px){.team-grid{grid-template-columns:1fr}}
+.team-card{background:var(--white);border:1px solid var(--ink-15);border-radius:var(--rl);padding:2.5rem 2rem;transition:transform .25s,box-shadow .25s;cursor:none;position:relative;overflow:hidden}
+.team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--warm));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.team-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(26,24,20,.08)}
+.team-card:hover::before{transform:scaleX(1)}
+.team-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red-l));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;font-style:italic;color:#fff;margin-bottom:1.5rem}
+.team-badge{display:inline-flex;align-items:center;background:var(--red-bg);border:1px solid var(--red-bd);padding:.25rem .85rem;border-radius:40px;font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:1.25rem}
+.team-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;letter-spacing:-.01em}
+.team-desc{font-size:.82rem;color:var(--ink-70);font-weight:300;line-height:1.65;margin-bottom:1.5rem}
+.team-linkedin{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red);text-decoration:none;transition:color .2s}
+.team-linkedin:hover{color:var(--red-l)}
+.team-linkedin svg{width:13px;height:13px;fill:currentColor}
+
+/* ── CLIENTS ── */
+.clients{padding:clamp(5rem,10vw,8rem) clamp(1.5rem,6vw,5rem);background:var(--bg2);border-top:1px solid var(--ink-15);border-bottom:1px solid var(--ink-15)}
+.clients-head{text-align:center;margin-bottom:3.5rem}
+.clients-head p{margin-top:1rem;font-size:.95rem;color:var(--ink-40);font-weight:300}
+.clients-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+@media(max-width:700px){.clients-grid{grid-template-columns:repeat(2,1fr)}}
+.client-item{background:var(--white);border:1px solid var(--ink-15);border-radius:var(--rl);padding:2.5rem 1.75rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;transition:border-color .25s,transform .25s,box-shadow .25s;cursor:none;position:relative;overflow:hidden;min-height:180px}
+.client-logo{height:60px;width:100%;display:flex;align-items:center;justify-content:center;transition:transform .25s}
+.client-logo img{max-height:50px;max-width:150px;object-fit:contain}
+.client-item:hover .client-logo{transform:scale(1.05)}
+.logo-s2e{color:#0B3D91;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.2rem;font-weight:700;letter-spacing:-.02em}
+.client-item .client-sector{text-align:center}
+.client-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--warm));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.client-item:hover{border-color:var(--red-bd);transform:translateY(-3px);box-shadow:0 8px 30px rgba(223,54,35,.1)}
+.client-item:hover::after{transform:scaleX(1)}
+.client-icon{width:48px;height:48px;border-radius:12px;background:var(--red-bg);border:1px solid var(--red-bd);display:flex;align-items:center;justify-content:center;margin-bottom:.75rem;color:var(--red)}
+.client-icon svg{width:22px;height:22px}
+.client-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--ink);letter-spacing:-.01em;line-height:1}
+.client-sector{font-size:.7rem;font-weight:500;color:var(--ink-40);letter-spacing:.1em;text-transform:uppercase;margin-top:.1rem}
+
+/* ── CONTACT ── */
+.contact{padding:clamp(6rem,12vw,9rem) clamp(1.5rem,6vw,5rem);display:grid;grid-template-columns:1fr 1.3fr;gap:6rem;align-items:start}
+@media(max-width:900px){.contact{grid-template-columns:1fr;gap:3rem}}
+.contact-intro{margin-top:1.5rem;font-size:.95rem;color:var(--ink-70);font-weight:300;line-height:1.8}
+.contact-details{margin-top:2.5rem;display:flex;flex-direction:column;gap:.75rem}
+.cdetail{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.25rem;background:var(--white);border:1px solid var(--ink-15);border-radius:var(--r);transition:border-color .2s}
+.cdetail:hover{border-color:var(--red-bd)}
+.cdetail-icon{width:36px;height:36px;min-width:36px;border-radius:8px;background:var(--red-bg);border:1px solid var(--red-bd);display:flex;align-items:center;justify-content:center}
+.cdetail-icon svg{width:16px;height:16px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cdetail h4{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-40);margin-bottom:.15rem}
+.cdetail p,.cdetail a{font-size:.85rem;color:var(--ink);text-decoration:none;font-weight:400;line-height:1.5}
+.cdetail a:hover{color:var(--red)}
+.cform{background:var(--white);border:1px solid var(--ink-15);border-radius:var(--rl);padding:2.5rem;box-shadow:0 4px 40px rgba(26,24,20,.05)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:500px){.form-row{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.fg label{font-size:.65rem;font-weight:600;color:var(--ink-40);letter-spacing:.1em;text-transform:uppercase}
+.fg input,.fg textarea{font-family:'Outfit',sans-serif;font-size:.875rem;color:var(--ink);background:var(--bg);border:1.5px solid var(--ink-15);border-radius:8px;padding:.75rem 1rem;outline:none;transition:border-color .2s,background .2s;font-weight:300}
+.fg input:focus,.fg textarea:focus{border-color:var(--red);background:#fff}
+.fg textarea{resize:vertical;min-height:120px}
+.form-note{font-size:.7rem;color:var(--ink-40);margin-bottom:1.25rem;font-weight:300;line-height:1.5}
+#form-success{display:none;background:var(--red-bg);border:1px solid var(--red-bd);border-radius:10px;padding:1.25rem 1.5rem;color:var(--red);font-size:.9rem;margin-bottom:1rem}
+#form-error{display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:1rem 1.25rem;color:#B91C1C;font-size:.85rem;margin-bottom:1rem}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:2.5rem clamp(1.5rem,5vw,5rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;font-style:italic;color:rgba(255,255,255,.4)}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap}
+.footer-links a{color:rgba(255,255,255,.25);text-decoration:none;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,.7)}
+.footer-copy{font-size:.72rem;color:rgba(255,255,255,.2)}
+
+/* ── REVEAL ── */
+.reveal{transition:opacity .75s ease,transform .75s ease}
+.reveal.hidden{opacity:0;transform:translateY(28px)}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav id="nav">
+  <a class="nav-logo" href="#"><img src="Ascoptage_horizontal_blank.png" alt="Ascoptage" style="height:30px;width:auto;display:block;max-width:160px"/></a>
+  <ul class="nav-links">
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#scop">SCOP</a></li>
+    <li><a href="#team">Équipe</a></li>
+    <li><a href="#clients">Clients</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Contact</a>
+</nav>
+
+<section class="hero" id="accueil">
+  <div class="hero-left">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-line"></span>ESN · Société Coopérative et Participative</div>
+    <h1>Gestion de<br/><span class="light">projet</span><br/><em>informatique</em></h1>
+    <p class="hero-sub">Ascoptage propose des prestations de Chefferie et Direction de Projet IT aux secteurs public et privé — portées par plus de 15 ans d'expérience chez les grands comptes.</p>
+    <div class="hero-actions">
+      <a href="#expertise" class="btn btn-primary">Nos expertises <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#contact" class="btn btn-outline">Nous contacter</a>
+    </div>
+    <div class="hero-meta">
+      <div><div class="hero-stat-num">15<sup>+</sup></div><div class="hero-stat-lbl">Ans d'expérience</div></div>
+      <div><div class="hero-stat-num">3</div><div class="hero-stat-lbl">Associés fondateurs</div></div>
+      <div><div class="hero-stat-num" style="font-size:2.8rem;font-style:italic;letter-spacing:-.04em;line-height:.85;margin-bottom:-.35rem">SCOP</div><div class="hero-stat-lbl">Statut coopératif</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-inner">
+      <div class="hero-big-word">Projet</div>
+      <div class="hcard"><div class="hcard-label">Notre mission</div><div class="hcard-text">Accompagner chaque organisation dans la réussite de ses projets informatiques, avec expertise, méthode et engagement.</div></div>
+      <div class="hcard-row">
+        <div class="hcard"><div class="hcard-label">Fondée en</div><div class="hcard-val">2019</div></div>
+        <div class="hcard"><div class="hcard-label">Statut</div><div class="hcard-val" style="font-size:1.2rem;font-style:italic">SCOP</div></div>
+      </div>
+      <div class="hcard"><div class="hcard-label">Notre engagement</div><div class="hcard-tag">Personnel senior · Démocratie · Partage de valeur</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Chefferie &amp; Direction de Projet</span></div>
+  <div class="strip-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Secteurs public &amp; privé</span></div>
+  <div class="strip-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Bassin nantais &amp; Île-de-France</span></div>
+  <div class="strip-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Modèle SCOP — Partage équitable</span></div>
+</div>
+
+<section class="expertise reveal" id="expertise">
+  <div class="expertise-inner">
+    <div>
+      <div class="sec-eyebrow">Expertise</div>
+      <h2 class="sec-h2" id="exp-h2">Chefferie &amp;<br/><em>Direction de projet</em></h2>
+      <div class="expertise-body" id="exp-body">
+        <p>Ascoptage propose des prestations de Chefferie de Projet et de Direction de Projet informatique à des entreprises des secteurs public et privé dans différents domaines d'activité (services, industrie, ecommerce…).</p>
+        <p>Ces différentes expériences nous ont amenés à développer une expertise dans le domaine du pilotage de projets informatiques : infogérance, déploiements, cybersécurité, mise en place et pilotage de supports et de centres de services.</p>
+        <p>Nous avons également développé un réseau d'acteurs de l'IT, plus particulièrement sur le bassin nantais et en Île-de-France.</p>
+      </div>
+    </div>
+    <div class="expertise-cards">
+      <div class="exp-card active" data-title="Chefferie &amp;|Direction de projet" data-body="<p>Ascoptage propose des prestations de Chefferie et de Direction de Projet informatique à des entreprises des secteurs public et privé dans différents domaines d'activité (services, industrie, ecommerce…).</p><p>Ces différentes expériences nous ont amenés à développer une expertise dans le domaine du pilotage de projets informatiques : infogérance, déploiements, cybersécurité, mise en place et pilotage de supports et de centres de services.</p><p>Nous avons également développé un réseau d'acteurs de l'IT, plus particulièrement sur le bassin nantais et en Île-de-France.</p>"><div class="exp-icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></div><div><div class="exp-title">Chefferie &amp; Direction de Projet IT</div><div class="exp-desc">Pilotage bout-en-bout et cadrage stratégique de vos projets informatiques, de la conception au déploiement.</div></div></div>
+      <div class="exp-card" data-title="Product Owner|&amp; IAM" data-body="<p>Nos Product Owners spécialisés dans la Gestion des Identités et des Accès (IAM) prennent en charge la définition, la priorisation et le suivi de votre backlog produit.</p><p>Ils orchestrent la coordination entre métiers, sécurité, équipes techniques et fournisseurs pour livrer une solution IAM alignée sur vos enjeux de conformité et d'expérience utilisateur.</p><p>Une expertise rare, particulièrement recherchée dans les environnements grands comptes.</p>"><div class="exp-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><div class="exp-title">Product Owner / IAM</div><div class="exp-desc">Gestion des identités et des accès, backlog, priorisation et coordination des parties prenantes.</div></div></div>
+      <div class="exp-card" data-title="Cybersécurité|&amp; Infogérance" data-body="<p>Mise en place et pilotage de centres de services, déploiements sécurisés et garantie de continuité opérationnelle pour vos environnements IT critiques.</p><p>Nous accompagnons nos clients dans la structuration de leurs dispositifs de cybersécurité : gouvernance, conformité, gestion des incidents et amélioration continue des SLA.</p><p>Une approche pragmatique qui combine maîtrise du risque et performance opérationnelle.</p>"><div class="exp-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="exp-title">Cybersécurité &amp; Infogérance</div><div class="exp-desc">Mise en place et pilotage de centres de services, déploiements sécurisés et continuité opérationnelle.</div></div></div>
+      <div class="exp-card" data-title="Une expérience|grands comptes" data-body="<p>La Poste, BNP Paribas, S2E, AXA — nos consultants ont éprouvé leur expertise auprès des acteurs de référence des secteurs bancaire, postal, assurance et services.</p><p>Plus de 15 ans d'expérience cumulée dans des environnements complexes, multi-projets et multi-équipes, qui se traduisent par une posture senior et une capacité d'adaptation immédiate.</p><p>Un atout décisif pour piloter vos projets les plus stratégiques en toute sérénité.</p>"><div class="exp-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="exp-title">Grands comptes</div><div class="exp-desc">La Poste, BNP Paribas, S2E, AXA — une expérience éprouvée chez les acteurs de référence.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="scop reveal" id="scop">
+  <div class="scop-inner">
+    <div>
+      <div class="sec-eyebrow">Notre modèle</div>
+      <h2 class="sec-h2">Une ESN au<br/><em>modèle SCOP</em></h2>
+      <div class="scop-body">
+        <p>Les trois associés fondateurs ont opté pour un statut peu représenté dans le secteur : le statut de SCOP (Société Coopérative et Participative). Ce statut favorise une plus grande démocratie au sein de l'entreprise et un partage plus équitable de la valeur générée.</p>
+        <p>Dans une SCOP, tous les salariés sont associés au capital de l'entreprise et possèdent une voix aux Assemblées Générales. Ce modèle répond directement aux écueils généralement constatés dans les ESN du marché.</p>
+      </div>
+    </div>
+    <div class="scop-pillars">
+      <div class="pillar"><div class="pillar-num">01</div><div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div><div class="pillar-title">Démocratie</div><div class="pillar-text">Les décisions stratégiques sont l'expression du plus grand nombre. Chaque salarié-associé participe.</div></div>
+      <div class="pillar"><div class="pillar-num">02</div><div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pillar-title">Transparence</div><div class="pillar-text">Les informations liées à la vie de l'entreprise circulent en toute transparence entre les associés.</div></div>
+      <div class="pillar"><div class="pillar-num">03</div><div class="pillar-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="pillar-title">Participation</div><div class="pillar-text">Intéressement, participation et dividendes : le partage du profit est équitable et incitatif.</div></div>
+      <div class="pillar"><div class="pillar-num">04</div><div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="pillar-title">Attractivité</div><div class="pillar-text">Une meilleure attractivité et fidélisation des salariés grâce à un modèle juste et motivant.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="team reveal" id="team">
+  <div class="team-header">
+    <div class="sec-eyebrow">L'équipe</div>
+    <h2 class="sec-h2">Trois <em>associés</em><br/>fondateurs</h2>
+    <p>Antoine BEASSE, Loïck BIGOT et Pierre CHAMPEAUX ont tous les trois plus de quinze années d'expérience dans les ESN, en tant que Chefs et Directeurs de Projet IT au sein de missions chez des clients grands comptes.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card"><div class="team-avatar">PC</div><div class="team-badge">Président &amp; Cofondateur</div><div class="team-name">Pierre Champeaux</div><div class="team-desc">Salarié et associé d'Ascoptage, Président et cofondateur. Directeur de projet Workspace avec plus de 15 ans d'expérience grands comptes.</div><a href="https://www.linkedin.com/in/pierre-champeaux-b16bab35/" target="_blank" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a></div>
+    <div class="team-card"><div class="team-avatar">AB</div><div class="team-badge">Directeur Général &amp; Cofondateur</div><div class="team-name">Antoine Beasse</div><div class="team-desc">Salarié et associé d'Ascoptage, cofondateur et Directeur Général. Product Owner pour la gestion des identités et des accès (IAM).</div><a href="https://www.linkedin.com/in/antoinebeasse/" target="_blank" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a></div>
+    <div class="team-card"><div class="team-avatar">LB</div><div class="team-badge">Directeur Général &amp; Cofondateur</div><div class="team-name">Loïck Bigot</div><div class="team-desc">Salarié et associé d'Ascoptage, cofondateur et Directeur Général. Product Owner pour la gestion des identités et des accès (IAM).</div><a href="https://www.linkedin.com/in/loick-bigot-86617bb/" target="_blank" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a></div>
+  </div>
+</section>
+
+<section class="clients reveal" id="clients">
+  <div class="clients-head">
+    <div class="sec-eyebrow" style="justify-content:center">Partenaires &amp; Clients</div>
+    <h2 class="sec-h2" style="text-align:center">Ils nous <em>font confiance</em></h2>
+    <p>Des références dans les secteurs bancaire, postal, assurance et services.</p>
+  </div>
+  <div class="clients-grid">
+    <div class="client-item">
+      <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/La_Poste_(Frankreich)_logo.svg" alt="La Poste"/></div>
+      <div class="client-sector">Services postaux</div>
+    </div>
+    <div class="client-item">
+      <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/8/85/BNP_Paribas_logo.svg" alt="BNP Paribas"/></div>
+      <div class="client-sector">Banque</div>
+    </div>
+    <div class="client-item">
+      <div class="client-logo"><img src="s2e_logo.png" alt="S2E"/></div>
+      <div class="client-sector">Épargne salariale</div>
+    </div>
+    <div class="client-item">
+      <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/94/AXA_Logo.svg" alt="AXA"/></div>
+      <div class="client-sector">Assurance</div>
+    </div>
+  </div>
+</section>
+
+<section class="contact reveal" id="contact">
+  <div>
+    <div class="sec-eyebrow">Contact</div>
+    <h2 class="sec-h2">Parlons de<br/><em>votre projet</em></h2>
+    <p class="contact-intro">Vous souhaitez nous confier un projet ou en savoir plus sur nos prestations ? Notre équipe est disponible pour échanger.</p>
+    <div class="contact-details">
+      <div class="cdetail"><div class="cdetail-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h4>Siège social</h4><p>4 rue du Berry, 44000 Nantes</p></div></div>
+      <div class="cdetail"><div class="cdetail-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h4>Agence</h4><p>17 rue du tertre, 44470 Carquefou</p></div></div>
+      <div class="cdetail"><div class="cdetail-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4a2 2 0 0 1 1.98-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h4>Téléphone</h4><a href="tel:0682969756">06 82 96 97 56</a></div></div>
+      <div class="cdetail"><div class="cdetail-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><h4>Email</h4><a href="/cdn-cgi/l/email-protection#6e0d01001a0f0d1a2e0f1d0d011e1a0f090b40081c"><span class="__cf_email__" data-cfemail="7b1814150f1a180f3b1a0818140b0f1a1c1e551d09">[email&#160;protected]</span></a></div></div>
+    </div>
+  </div>
+  <div class="cform">
+    <div id="form-success">✓ Votre message a bien été envoyé. Nous vous répondrons rapidement.</div>
+    <div id="form-error"></div>
+    <div id="form-fields">
+      <div class="form-row">
+        <div class="fg"><label>Prénom *</label><input id="f-prenom" type="text" placeholder="Antoine"/></div>
+        <div class="fg"><label>Nom *</label><input id="f-nom" type="text" placeholder="Dupont"/></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>E-mail *</label><input id="f-email" type="email" placeholder="antoine@entreprise.fr"/></div>
+        <div class="fg"><label>Téléphone</label><input id="f-tel" type="tel" placeholder="06 00 00 00 00"/></div>
+      </div>
+      <div class="fg"><label>Objet *</label><input id="f-objet" type="text" placeholder="Demande de prestation — Chefferie de projet"/></div>
+      <div class="fg"><label>Message *</label><textarea id="f-msg" placeholder="Décrivez votre projet ou votre besoin…"></textarea></div>
+      <p class="form-note">Vos données personnelles sont uniquement collectées afin de répondre à votre demande d'informations.</p>
+      <button id="f-btn" class="btn btn-primary" style="width:100%;justify-content:center" onclick="sendForm()">Envoyer le message <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Ascoptage</div>
+  <div class="footer-links">
+    <a href="#accueil">Accueil</a><a href="#expertise">Expertise</a>
+    <a href="#scop">SCOP</a><a href="#team">Équipe</a>
+    <a href="#">Mentions légales</a><a href="#">Cookies</a>
+  </div>
+  <span class="footer-copy">© 2025 Ascoptage — SCOP</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" defer></script><script>
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+document.querySelectorAll('a,button,.exp-card,.pillar,.team-card,.client-item,.cdetail').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.opacity='.55'});
+  el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px';ring.style.opacity='.3'});
+});
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40)});
+const reveals=document.querySelectorAll('.reveal');
+reveals.forEach(el=>el.classList.add('hidden'));
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('hidden');ro.unobserve(e.target)}})},{threshold:.08});
+reveals.forEach(el=>ro.observe(el));
+document.querySelectorAll('.exp-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    document.querySelectorAll('.exp-card').forEach(c=>c.classList.remove('active'));
+    card.classList.add('active');
+    const t=card.dataset.title.split('|');
+    document.getElementById('exp-h2').innerHTML=t[0]+'<br/><em>'+t[1]+'</em>';
+    document.getElementById('exp-body').innerHTML=card.dataset.body;
+  });
+});
+function sendForm(){
+  const nom=document.getElementById('f-nom').value.trim();
+  const prenom=document.getElementById('f-prenom').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const tel=document.getElementById('f-tel').value.trim();
+  const objet=document.getElementById('f-objet').value.trim();
+  const msg=document.getElementById('f-msg').value.trim();
+  const err=document.getElementById('form-error');
+  err.style.display='none';
+  if(!nom||!prenom||!email||!objet||!msg){err.textContent='Merci de renseigner tous les champs obligatoires (*).';err.style.display='block';return}
+  const btn=document.getElementById('f-btn');
+  btn.disabled=true;btn.textContent='Envoi en cours…';
+  const fd=new FormData();
+  fd.append('nom',nom);fd.append('prenom',prenom);fd.append('email',email);fd.append('tel',tel);fd.append('objet',objet);fd.append('message',msg);
+  fetch('contact.php',{method:'POST',body:fd})
+    .then(r=>r.json())
+    .then(data=>{
+      if(data.success){document.getElementById('form-fields').style.display='none';document.getElementById('form-success').style.display='block'}
+      else{err.textContent=data.message||'Une erreur est survenue.';err.style.display='block';btn.disabled=false;btn.textContent='Envoyer le message'}
+    })
+    .catch(()=>{err.textContent='Erreur réseau. Merci de réessayer.';err.style.display='block';btn.disabled=false;btn.textContent='Envoyer le message'});
+}
+</script>
+</body>
+</html>
