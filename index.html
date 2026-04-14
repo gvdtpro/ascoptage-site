@@ -32,7 +32,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);font-
 
 /* ── CURSOR ── */
 #cursor{position:fixed;width:8px;height:8px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(255,255,255,.4)}
-#cursor-ring{position:fixed;width:34px;height:34px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .18s cubic-bezier(.25,.46,.45,.94),height .18s,opacity .2s;opacity:.5;box-shadow:0 0 0 1px rgba(255,255,255,.25),inset 0 0 0 1px rgba(255,255,255,.25)}
+#cursor-ring{position:fixed;width:54px;height:54px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .18s cubic-bezier(.25,.46,.45,.94),height .18s,opacity .2s;opacity:.6;box-shadow:0 0 0 1px rgba(255,255,255,.25),inset 0 0 0 1px rgba(255,255,255,.25)}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:500;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.5rem,5vw,5rem);background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:background .3s,box-shadow .3s}
@@ -384,8 +384,8 @@ let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
 (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
 document.querySelectorAll('a,button,.exp-card,.pillar,.team-card,.client-item,.cdetail').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.opacity='.55'});
-  el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px';ring.style.opacity='.3'});
+  el.addEventListener('mouseenter',()=>{ring.style.width='64px';ring.style.height='64px';ring.style.opacity='.8'});
+  el.addEventListener('mouseleave',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.opacity='.6'});
 });
 window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40)});
 const reveals=document.querySelectorAll('.reveal');

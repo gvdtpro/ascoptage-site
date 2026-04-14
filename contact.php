@@ -4,8 +4,8 @@ header('Content-Type: application/json; charset=utf-8');
 // ─── CONFIGURATION ───────────────────────────────────────────
 $SMTP_HOST = 'smtp.office365.com';
 $SMTP_PORT = 587;
-$SMTP_USER = 'gael.vadot@ascoptage.fr';     // ⚠️ boîte Microsoft 365 autorisée à envoyer
-$SMTP_PASS = 'MOT_DE_PASSE_OU_APP_PASSWORD';// ⚠️ mot de passe (ou App Password si MFA activée)
+$SMTP_USER = 'gael.vadot@ascoptage.fr';
+$SMTP_PASS = 'Liloudu01';
 $SMTP_FROM = 'gael.vadot@ascoptage.fr';     // doit correspondre à $SMTP_USER (Microsoft refuse sinon)
 $SMTP_TO   = 'gael.vadot@ascoptage.fr';
 // ─────────────────────────────────────────────────────────────
