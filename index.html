@@ -414,10 +414,13 @@ function sendForm(){
   btn.disabled=true;btn.textContent='Envoi en cours…';
   const fd=new FormData();
   fd.append('nom',nom);fd.append('prenom',prenom);fd.append('email',email);fd.append('tel',tel);fd.append('objet',objet);fd.append('message',msg);
-  fetch('contact.php',{method:'POST',body:fd})
+  fd.append('_subject','Demande de contact — '+prenom+' '+nom+' — '+objet);
+  fd.append('_captcha','false');
+  fd.append('_template','table');
+  fetch('https://formsubmit.co/ajax/gael.vadot@ascoptage.fr',{method:'POST',headers:{'Accept':'application/json'},body:fd})
     .then(r=>r.json())
     .then(data=>{
-      if(data.success){document.getElementById('form-fields').style.display='none';document.getElementById('form-success').style.display='block'}
+      if(data.success==='true'||data.success===true){document.getElementById('form-fields').style.display='none';document.getElementById('form-success').style.display='block'}
       else{err.textContent=data.message||'Une erreur est survenue.';err.style.display='block';btn.disabled=false;btn.textContent='Envoyer le message'}
     })
     .catch(()=>{err.textContent='Erreur réseau. Merci de réessayer.';err.style.display='block';btn.disabled=false;btn.textContent='Envoyer le message'});
