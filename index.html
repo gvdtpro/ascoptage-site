@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Ascoptage — Gestion de projet informatique</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231A1814'/><text x='32' y='46' font-family='Cormorant Garamond,serif' font-size='44' font-weight='700' font-style='italic' fill='%23DF3623' text-anchor='middle'>A</text></svg>"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -205,6 +206,59 @@ footer{background:var(--ink);padding:2.5rem clamp(1.5rem,5vw,5rem);display:flex;
 /* ── REVEAL ── */
 .reveal{transition:opacity .75s ease,transform .75s ease}
 .reveal.hidden{opacity:0;transform:translateY(28px)}
+
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:768px){
+  body{cursor:auto;font-size:15px;overflow-x:hidden}
+  #cursor,#cursor-ring{display:none}
+  nav{padding:0 1rem;height:60px}
+  .nav-logo img{height:24px}
+  .nav-cta{padding:.4rem 1rem;font-size:.7rem}
+  .hero{grid-template-columns:1fr;padding-top:60px;min-height:auto}
+  .hero-left{padding:2rem 1.25rem 3rem;width:100%;max-width:100%;overflow-x:hidden}
+  .hero-eyebrow{margin-bottom:1.25rem;font-size:.62rem;flex-wrap:wrap}
+  .hero h1{font-size:2.4rem;line-height:1.05;word-break:break-word;hyphens:auto}
+  .hero h1 em{display:block;font-size:2rem;word-break:break-word}
+  .hero-sub{font-size:.92rem;margin-top:1.25rem;max-width:100%}
+  .hero-actions{margin-top:1.75rem;flex-direction:column;align-items:stretch}
+  .hero-actions .btn{justify-content:center;width:100%}
+  .hero-meta{margin-top:2.5rem;padding-top:2rem;flex-wrap:wrap;gap:1.25rem;justify-content:space-between;width:100%}
+  .hero-meta>div{flex:0 1 calc(33.33% - 1rem);min-width:0}
+  .hero-stat-num{font-size:1.7rem!important;line-height:1!important}
+  .hero-stat-lbl{font-size:.58rem;letter-spacing:.06em}
+  .hero-right{min-height:auto;padding:2.5rem 1.25rem;width:100%;overflow:hidden}
+  .hero-right-inner{max-width:100%;width:100%}
+  .hero-big-word{font-size:4rem;top:-.5rem;right:0}
+  .hcard{padding:1.1rem 1.25rem}
+  .hcard-text{font-size:.8rem}
+  .hcard-val{font-size:1.4rem}
+  .strip{padding:1rem;gap:1rem;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}
+  .strip-item{flex-shrink:0}
+  .strip-item span{font-size:.7rem}
+  .expertise,.scop,.team,.clients,.contact{padding:4rem 1.5rem}
+  .expertise-inner,.scop-inner,.contact{grid-template-columns:1fr;gap:2.5rem}
+  .sec-h2{font-size:2rem!important}
+  .exp-card{padding:1.25rem 1.4rem;gap:1rem}
+  .exp-icon{width:36px;height:36px;min-width:36px}
+  .scop-pillars{grid-template-columns:1fr;gap:.75rem}
+  .pillar{padding:1.4rem}
+  .team-grid{grid-template-columns:1fr;gap:1rem}
+  .team-card{padding:2rem 1.5rem}
+  .clients-grid{grid-template-columns:repeat(2,1fr);gap:1rem}
+  .client-item{padding:1.5rem 1rem;min-height:140px}
+  .client-logo img{max-height:36px;max-width:100px}
+  .cform{padding:1.75rem}
+  .form-row{grid-template-columns:1fr}
+  .cdetail{padding:.85rem 1rem}
+  footer{padding:2rem 1.5rem;flex-direction:column;text-align:center;gap:1rem}
+  .footer-links{justify-content:center;gap:1rem}
+}
+@media(max-width:380px){
+  .hero h1{font-size:2rem}
+  .hero h1 em{font-size:1.7rem}
+  .hero-meta>div{flex:0 1 calc(50% - .75rem)}
+  .clients-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
